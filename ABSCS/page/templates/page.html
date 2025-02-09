@@ -94,8 +94,53 @@
             </div>
             <hr style="height: 1px" width="100%" height="1px" size="2" />
         </header>
-        <h1 class="pageTitle">Welcome to Dashboard</h1>
-        <main></main>
+        <h1 class="pageTitle">Battery System</h1>
+        <main>
+            <div class="mnemonicsAlertContainer">
+                <div class="mnemonicsContainer">
+                    Mnemonics
+                    <div class="mnemonicsScreen">
+                        {% for item in mnemonics %}
+                        <div class="mnemonic">
+                            <div class="name">
+                                <p>{{ item.name }}</p>
+                            </div>
+                            <div class="value">
+                                <p>{{ item.value }}</p>
+                            </div>
+                            <div class="unit">
+                                <p>{{ item.unit }}</p>
+                            </div>
+                        </div>
+                        {% endfor %} {% for item in leftToRender %}
+                        <div class="mnemonic">
+                            <div class="name">
+                                <p>null</p>
+                            </div>
+                            <div class="value">
+                                <p>null</p>
+                            </div>
+                            <div class="unit">
+                                <p>null</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="commandScreen">
+                    Command
+                    <div>
+                        <button>Simple command</button>
+                    </div>
+                </div>
+            </div>
+            <div class="alertsContainer">
+                Alerts
+                <div>
+                    <button>Simple command</button>
+                </div>
+            </div>
+        </main>
         <footer></footer>
     </body>
 </html>

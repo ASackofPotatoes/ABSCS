@@ -29,5 +29,5 @@ def index(request):
     }
 
     print(mnemonics)
-    return render(request, "index.html", context)
+    return render(request, "page.html", context)
 # Create your views here.
