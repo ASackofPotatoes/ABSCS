@@ -8,6 +8,9 @@ Installation Guide:
 6. python3 manage.py migrate
 ```
 
+> [!IMPORTANT]
+> When pulling from updated repository, ensure to remigrate the database by running the last two commands.
+
 Execution Guide:
 ```
 1. Open the ABSCS directory with manage.py
