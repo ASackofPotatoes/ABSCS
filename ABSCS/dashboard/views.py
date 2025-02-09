@@ -1,33 +1,22 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import HttpResponse
-from .models import Mnemonic
-
+from page.models import Page
 MAX_MNEMONICS = 12
 
 
-def addTestMnemonics():
-    if Mnemonic.objects.filter(id='1'):
-        return
-    mnemonic = Mnemonic(type='int', value='36.2', unit='C', name='BATT_TEMP')
-    mnemonic.save()
+def getAllPages():
+    pages = Page.objects.all()
+    print(pages)
+    pageList = []
+    for page in pages:
+        pageList.append({
+            "title": page.title,
+            "url": reverse("view", kwargs={"id": page.id})
+        })
+    return pageList
 
 
 def index(request):
-    addTestMnemonics()
-    mnemonics = list(Mnemonic.objects.all().values())
-
-    leftToRender = 0
-
-    if (len(mnemonics) >= MAX_MNEMONICS):
-        leftToRender = 0
-    else:
-        leftToRender = MAX_MNEMONICS - len(mnemonics)
-
-    context = {
-        "mnemonics": mnemonics[:MAX_MNEMONICS],
-        "leftToRender": range(leftToRender)
-    }
-
-    print(mnemonics)
-    return render(request, "index.html", context)
+    return render(request, "index.html", {"listPages": getAllPages()})
 # Create your views here.

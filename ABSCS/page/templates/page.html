@@ -6,10 +6,12 @@
     {% bootstrap_css %} {% bootstrap_javascript %}
     <head>
         <meta charset="UTF-8" />
-        <title>Wiki App</title>
+        <title>{{ page.title }} - ABSCS</title>
+        <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
     </head>
     <body>
         <header>
+            <!-- Sidebar Button -->
             <button
                 class="btn btn-link"
                 type="button"
@@ -30,6 +32,19 @@
                     <h5 class="offcanvas-title" id="offcanvasExampleLabel">
                         Pages
                     </h5>
+                    <div>
+                        <form method="POST" action="{% url 'add' %}">
+                            {% csrf_token %}
+                            <input
+                                type="text"
+                                name="title"
+                                maxlength="15"
+                                placeholder="New Page"
+                                required
+                            />
+                            <button type="submit">Create New Page</button>
+                        </form>
+                    </div>
                     <button
                         type="button"
                         class="btn-close text-reset"
@@ -37,14 +52,24 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="offcanvas-body">hello</div>
+                <div class="offcanvas-body">
+                    {% for item in listPages %}
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                    {% endfor %}
+                </div>
             </div>
+
+            <!-- ABSCS Text -->
             <a class="pageTitle" href="{% url 'dashboard' %}">ABSCS</a>
+
+            <!-- Logo -->
             <img
                 class="logo"
                 src="{% static 'images/satellitedish1.png' %}"
                 alt="Logo"
             />
+
+            <!-- Settings Button -->
             <button
                 class="btn btn-link"
                 type="button"
@@ -94,7 +119,7 @@
             </div>
             <hr style="height: 1px" width="100%" height="1px" size="2" />
         </header>
-        <h1 class="pageTitle">Battery System</h1>
+        <h1 class="pageTitle">{{ page.title }}</h1>
         <main>
             <div class="mnemonicsAlertContainer">
                 <div class="mnemonicsContainer">
