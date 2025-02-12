@@ -2,100 +2,237 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
-    {% bootstrap_css %} {% bootstrap_javascript %}
-    <head>
-        <meta charset="UTF-8" />
-        <title>Wiki App</title>
-    </head>
-    <body>
-        <header>
-            <button
-                class="btn btn-link"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
-                aria-controls="offcanvasExample"
-            >
-                <img src="{% static 'images/Sidebar.png' %}" alt="" />
-            </button>
+  <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+  {% bootstrap_css %} {% bootstrap_javascript %}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wiki App</title>
+    <style>
+      html,
+      body {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+      }
+      main {
+        flex-grow: 1;
+        display: flex;
+      }
+      footer {
+        height: 60px;
+        border-radius: 2px;
+        border-color: black;
+      }
 
-            <div
-                class="offcanvas offcanvas-start"
-                tabindex="-1"
-                id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel"
-            >
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">
-                        Pages
-                    </h5>
-                    <button
-                        type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div class="offcanvas-body">hello</div>
-            </div>
-            <a class="pageTitle" href="{% url 'dashboard' %}">ABSCS</a>
-            <img
-                class="logo"
-                src="{% static 'images/satellitedish1.png' %}"
-                alt="Logo"
-            />
-            <button
-                class="btn btn-link"
-                type="button"
-                id="settingLogo"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"
-                Toggle
-                right
-                offcanvas
-            >
-                <img src="{% static 'images/Settings.png' %}" />
-            </button>
+      .divider {
+        width: 80%;
+        margin: 20px 0;
+      }
 
-            <div
-                class="offcanvas offcanvas-end"
-                tabindex="-1"
-                id="offcanvasRight"
-                aria-labelledby="offcanvasRightLabel"
-            >
-                <div class="offcanvas-header">
-                    <h5 id="offcanvasRightLabel">Settings</h5>
-                    <button
-                        type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                    ></button>
+      .vr {
+        width: 3px;
+        height: 90%;
+        background-color: #ccc;
+        border-radius: 3px;
+      }
+
+      .connection-btn {
+        border-radius: 15px;
+        height: 160px;
+        width: 400px;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+        background-color: #b771e5;
+        border-color: #b771e5;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button
+        class="btn btn-link"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample"
+      >
+        <img src="{% static 'images/Sidebar.png' %}" alt="" />
+      </button>
+
+      <div
+        class="offcanvas offcanvas-start"
+        tabindex="-1"
+        id="offcanvasExample"
+        aria-labelledby="offcanvasExampleLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Pages</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">hello</div>
+      </div>
+      <a class="pageTitleLink" href="{% url 'dashboard' %}">ABSCS</a>
+      <img
+        class="logo"
+        src="{% static 'images/satellitedish1.png' %}"
+        alt="Logo"
+      />
+      <button
+        class="btn btn-link"
+        type="button"
+        id="settingLogo"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight"
+        Toggle
+        right
+        offcanvas
+      >
+        <img src="{% static 'images/Settings.png' %}" />
+      </button>
+
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Settings</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <a href="">Configure Pages</a>
+          <hr style="height: 1px" width="100%" height="1px" size="2" />
+          <a href="">Configure TM & TC Database</a>
+          <hr style="height: 1px" width="100%" height="1px" size="2" />
+          <a href="">Configure Connection Profiles</a>
+        </div>
+      </div>
+      <hr style="height: 1px" width="100%" height="1px" size="2" />
+    </header>
+    <main class="d-flex flex-column flex-grow-1">
+      <div
+        class="container-fluid d-flex flex-column flex-grow-1 justify-content-center align-items-center"
+      >
+        <!-- Welcome Header -->
+        <div class="row justify-content-center">
+          <h1 class="pageTitle" style="margin-top: 0">Welcome to Dashboard</h1>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Row holding the mission, profile column, and the connnection button column-->
+        <div
+          class="row align-items-center justify-content-center w-75"
+          style="margin-bottom: 2em"
+        >
+          <!-- Left Column with Two Rows of Text -->
+          <div class="col d-flex flex-column">
+            <div class="row align-items-center" style="justify-content: right">
+              <div class="col-auto">
+                <h1 class="sectionTitle">Select a Mission</h1>
+              </div>
+              <div class="col-auto">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Missions:
+                  </button>
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton1"
+                  >
+                    <!-- THIS IS WHERE THE MISSIONS GO ONCE WE HAVE DATABASE STUFF WORKING-->
+                    <li>
+                      <a class="dropdown-item" href="#">Mission 1</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Mission 2</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Mission 3</a>
+                    </li>
+                  </ul>
                 </div>
-                <div class="offcanvas-body">
-                    <a href="">Configure Pages</a>
-                    <hr
-                        style="height: 1px"
-                        width="100%"
-                        height="1px"
-                        size="2"
-                    />
-                    <a href="">Configure TM & TC Database</a>
-                    <hr
-                        style="height: 1px"
-                        width="100%"
-                        height="1px"
-                        size="2"
-                    />
-                    <a href="">Configure Connection Profiles</a>
-                </div>
+              </div>
             </div>
-            <hr style="height: 1px" width="100%" height="1px" size="2" />
-        </header>
-        <h1 class="pageTitle">Welcome to Dashboard</h1>
-        <main></main>
-        <footer></footer>
-    </body>
+            <div class="row align-items-center" style="justify-content: right">
+              <div class="col-auto">
+                <h2 class="sectionTitle">Select a Connection Profile</h2>
+              </div>
+              <div class="col-auto">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Profiles:
+                  </button>
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton1"
+                  >
+                    <!-- THIS IS WHERE THE MISSIONS GO ONCE WE HAVE DATABASE STUFF WORKING-->
+                    <li>
+                      <a class="dropdown-item" href="#">Profile 1</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Profile 2</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Profile 3</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vertical Spacer -->
+          <div class="col-auto d-flex align-items-center" style="height: 100%">
+            <div class="vr"></div>
+          </div>
+
+          <!-- Right Column with Full-Height Button -->
+          <div class="col d-flex justify-content-left align-items-center">
+            <button class="btn btn-primary connection-btn">
+              Attempt Connection
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="d-flex flex-column flex-grow">
+      <div class="container-fluid flex-column flex-grow" style="height: 100%">
+        <div class="row align-items-center footer-row">
+          <div class="footer-mission col-auto d-flex align-items-center">
+            <div>Mission: Ex-Alta 3</div>
+          </div>
+          <div class="footer-conn-status col d-flex align-items-center">
+            <div>Connection Status: CONNECTED to ______</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
