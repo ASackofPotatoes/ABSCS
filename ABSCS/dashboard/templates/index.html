@@ -43,8 +43,15 @@
         font-size: 2rem;
         font-weight: bold;
         margin-bottom: 0.5em;
+        color: #fff;
         background-color: #b771e5;
         border-color: #b771e5;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .connection-btn:hover {
+        background-color: #a44be0 !important; /* Darker shade on hover */
+        color: white !important; /* Ensure text stays white */
       }
     </style>
   </head>
@@ -215,9 +222,7 @@
 
           <!-- Right Column with Full-Height Button -->
           <div class="col d-flex justify-content-left align-items-center">
-            <button class="btn btn-primary connection-btn">
-              Attempt Connection
-            </button>
+            <button class="btn connection-btn">Attempt Connection</button>
           </div>
         </div>
       </div>
