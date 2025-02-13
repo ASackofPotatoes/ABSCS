@@ -2,145 +2,160 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
-    {% bootstrap_css %} {% bootstrap_javascript %}
-    <head>
-        <meta charset="UTF-8" />
-        <title>Wiki App</title>
-    </head>
-    <body>
-        <header>
-            <button
-                class="btn btn-link"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
-                aria-controls="offcanvasExample"
-            >
-                <img src="{% static 'images/Sidebar.png' %}" alt="" />
-            </button>
+  <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+  {% bootstrap_css %} {% bootstrap_javascript %}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wiki App</title>
+  </head>
+  <body>
+    <header>
+      <button
+        class="btn btn-link"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample"
+      >
+        <img src="{% static 'images/Sidebar.png' %}" alt="" />
+      </button>
 
-            <div
-                class="offcanvas offcanvas-start"
-                tabindex="-1"
-                id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel"
-            >
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">
-                        Pages
-                    </h5>
-                    <button
-                        type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div class="offcanvas-body">hello</div>
-            </div>
-            <a class="pageTitle" href="{% url 'dashboard' %}">ABSCS</a>
-            <img
-                class="logo"
-                src="{% static 'images/satellitedish1.png' %}"
-                alt="Logo"
-            />
-            <button
-                class="btn btn-link"
-                type="button"
-                id="settingLogo"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"
-                Toggle
-                right
-                offcanvas
-            >
-                <img src="{% static 'images/Settings.png' %}" />
-            </button>
+      <div
+        class="offcanvas offcanvas-start"
+        tabindex="-1"
+        id="offcanvasExample"
+        aria-labelledby="offcanvasExampleLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Pages</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">hello</div>
+      </div>
+      <a class="pageTitle" href="{% url 'dashboard' %}">ABSCS</a>
+      <img
+        class="logo"
+        src="{% static 'images/satellitedish1.png' %}"
+        alt="Logo"
+      />
+      <button
+        class="btn btn-link"
+        type="button"
+        id="settingLogo"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight"
+        Toggle
+        right
+        offcanvas
+      >
+        <img src="{% static 'images/Settings.png' %}" />
+      </button>
 
-            <div
-                class="offcanvas offcanvas-end"
-                tabindex="-1"
-                id="offcanvasRight"
-                aria-labelledby="offcanvasRightLabel"
-            >
-                <div class="offcanvas-header">
-                    <h5 id="offcanvasRightLabel">Settings</h5>
-                    <button
-                        type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div class="offcanvas-body">
-                    <a href="">Configure Pages</a>
-                    <hr
-                        style="height: 1px"
-                        width="100%"
-                        height="1px"
-                        size="2"
-                    />
-                    <a href="">Configure TM & TC Database</a>
-                    <hr
-                        style="height: 1px"
-                        width="100%"
-                        height="1px"
-                        size="2"
-                    />
-                    <a href="">Configure Connection Profiles</a>
-                </div>
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Settings</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <a href="">Configure Pages</a>
+          <hr style="height: 1px" width="100%" height="1px" size="2" />
+          <a href="">Configure TM & TC Database</a>
+          <hr style="height: 1px" width="100%" height="1px" size="2" />
+          <a href="">Configure Connection Profiles</a>
+        </div>
+      </div>
+      <hr style="height: 1px" width="100%" height="1px" size="2" />
+    </header>
+    <h1 class="pageTitle">Battery System</h1>
+    <main>
+      <div class="mnemonicsAlertContainer">
+        <div class="mnemonicsContainer">
+          Mnemonics
+          <div class="mnemonicsScreen">
+            {% for item in mnemonics %}
+            <div class="mnemonic">
+              <div class="name">
+                <p>{{ item.name }}</p>
+              </div>
+              <div id={{ item.name }}_val class="value">
+                <p>{{ item.value }}</p>
+              </div>
+              <div class="unit">
+                <p>{{ item.unit }}</p>
+              </div>
             </div>
-            <hr style="height: 1px" width="100%" height="1px" size="2" />
-        </header>
-        <h1 class="pageTitle">Battery System</h1>
-        <main>
-            <div class="mnemonicsAlertContainer">
-                <div class="mnemonicsContainer">
-                    Mnemonics
-                    <div class="mnemonicsScreen">
-                        {% for item in mnemonics %}
-                        <div class="mnemonic">
-                            <div class="name">
-                                <p>{{ item.name }}</p>
-                            </div>
-                            <div class="value">
-                                <p>{{ item.value }}</p>
-                            </div>
-                            <div class="unit">
-                                <p>{{ item.unit }}</p>
-                            </div>
-                        </div>
-                        {% endfor %} {% for item in leftToRender %}
-                        <div class="mnemonic">
-                            <div class="name">
-                                <p>null</p>
-                            </div>
-                            <div class="value">
-                                <p>null</p>
-                            </div>
-                            <div class="unit">
-                                <p>null</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="commandScreen">
-                    Command
-                    <div>
-                        <button>Simple command</button>
-                    </div>
-                </div>
+            {% endfor %} {% for item in leftToRender %}
+            <div class="mnemonic">
+              <div class="name">
+                <p>null</p>
+              </div>
+              <div class="value">
+                <p>null</p>
+              </div>
+              <div class="unit">
+                <p>null</p>
+              </div>
             </div>
-            <div class="alertsContainer">
-                Alerts
-                <div>
-                    <button>Simple command</button>
-                </div>
-            </div>
-        </main>
-        <footer></footer>
-    </body>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="commandScreen">
+          Command
+          <div>
+            <button>Simple command</button>
+          </div>
+        </div>
+      </div>
+      <div class="alertsContainer">
+        Alerts
+        <div>
+          <button>Simple command</button>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+  </body>
 </html>
+
+<script>
+  const socket = new WebSocket("ws://localhost:8000/ws/telemetry/");
+
+  socket.onmessage = function (event) {
+    console.log("Received:", event.data); // Display telemetry data
+    tm_packet = JSON.parse(JSON.parse(event.data))
+    tm_packet.telemetry.forEach((element) => {
+      console.log("Updating " + element.mnemonic + " with value: " + element.data)
+      try {
+      valDiv = document.getElementById(element.mnemonic + "_val");
+      valDiv.innerText = element.data;
+      }
+      catch (error) {
+        console.log("No div found for " + element.mnemonic)
+      }
+    });
+  };
+
+  socket.onopen = function () {
+    console.log("WebSocket connected!");
+  };
+
+  socket.onclose = function () {
+    console.log("WebSocket disconnected!");
+  };
+</script>

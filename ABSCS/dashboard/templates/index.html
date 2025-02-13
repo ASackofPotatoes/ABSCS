@@ -222,7 +222,9 @@
 
           <!-- Right Column with Full-Height Button -->
           <div class="col d-flex justify-content-left align-items-center">
-            <button class="btn connection-btn">Attempt Connection</button>
+            <button id="connectionButton" class="btn connection-btn">
+              Attempt Connection
+            </button>
           </div>
         </div>
       </div>
@@ -241,3 +243,16 @@
     </footer>
   </body>
 </html>
+
+<script>
+  btn = document.getElementById("connectionButton");
+  btn.addEventListener("click", () => {
+    fetch("/api/start-connection", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ profileID: 1 }),
+    }).catch((error) => console.error("Error:", error));
+  });
+</script>
