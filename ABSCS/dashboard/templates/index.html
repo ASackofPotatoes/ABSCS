@@ -77,6 +77,19 @@
                     <h5 class="offcanvas-title" id="offcanvasExampleLabel">
                         Pages
                     </h5>
+                    <div>
+                        <form method="POST" action="{% url 'add' %}">
+                            {% csrf_token %}
+                            <input
+                                type="text"
+                                name="title"
+                                maxlength="15"
+                                placeholder="New Page"
+                                required
+                            />
+                            <button type="submit">Create New Page</button>
+                        </form>
+                    </div>
                     <button
                         type="button"
                         class="btn-close text-reset"
@@ -84,7 +97,11 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="offcanvas-body">hello</div>
+                <div class="offcanvas-body">
+                    {% for item in listPages %}
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                    {% endfor %}
+                </div>
             </div>
             <a class="pageTitleLink" href="{% url 'dashboard' %}">ABSCS</a>
             <img

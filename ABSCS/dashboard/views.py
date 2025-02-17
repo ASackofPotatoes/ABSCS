@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from .models import Mnemonic
 from tcp_client.tcp_handler import tcp_client
 import threading
 import asyncio
