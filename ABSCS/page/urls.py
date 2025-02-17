@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 
-app_name = 'page'
 urlpatterns = [
-    path("", views.index, name="page")
+    path("add/", views.add_page, name="add"),
+    path("<int:id>/", views.view_page, name="view"),
+    path("edit/", views.edit, name="edit")
 ]

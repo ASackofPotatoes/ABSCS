@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+    display: block;
+}
+
+/*Header*/
+header .pageTitle {
+    display: inline;
+    padding: 1em;
+}
+.sidebar {
+    display: inline;
+    margin: 1em;
+}
+.logo {
+    display: inline;
+    vertical-align: middle;
+    margin: 1em;
+    margin-left: 0;
+}
+#settingLogo {
+    display: inline;
+    float: right;
+    margin: 1em;
+}
+.navbar-collapse {
+    direction: rtl;
+}
+.offcanvas-body * {
+    display: block;
+}
+
+/*Main Body*/
+main .mnemonicsAlertContainer {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+body .pageTitle {
+    margin: 1em;
+}
+
+.form-select {
+    overflow-y: scroll;
+}
+
+.mnemonicsContainer {
+    flex: 3;
+    background-color: #d9d9d9;
+    padding: 1em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.mnemonicsScreen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.mnemonic {
+    font-size: 1em;
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1em;
+    margin: 1em;
+}
+.mnemonic .name {
+    background-color: palegreen;
+    display: inline-block;
+}
+.mnemonic .value {
+    background-color: aquamarine;
+    display: inline-block;
+}
+.mnemonic .unit {
+    background-color: aquamarine;
+    display: inline-block;
+}

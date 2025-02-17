@@ -16,5 +16,5 @@ class Mnemonic(models.Model):
 
 class PageHasMnemonic(models.Model):
     id = models.AutoField(primary_key=True)
-    pageId = models.IntegerField
-    mnemonicId = models.IntegerField
+    pageId = models.IntegerField()
+    mnemonicId = models.IntegerField()

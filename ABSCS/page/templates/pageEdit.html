@@ -2,11 +2,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/pageEdit.css' %}" />
     {% bootstrap_css %} {% bootstrap_javascript %}
     <head>
         <meta charset="UTF-8" />
-        <title>Wiki App</title>
+        <title>Edit Page - ABSCS</title>
+        <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
     </head>
     <body>
         <header>
@@ -100,75 +101,23 @@
                 <div class="mnemonicsContainer">
                     Mnemonics
                     <div class="mnemonicsScreen">
-                        {% for item in mnemonics %}
-                        <div class="mnemonic">
-                            <div class="name">
-                                <p>{{ item.name }}</p>
-                            </div>
-                            <div id="{{" item.name }}_val class="value">
-                                <p>{{ item.value }}</p>
-                            </div>
-                            <div class="unit">
-                                <p>{{ item.unit }}</p>
-                            </div>
-                        </div>
-                        {% endfor %} {% for item in leftToRender %}
-                        <div class="mnemonic">
-                            <div class="name">
-                                <p>null</p>
-                            </div>
-                            <div class="value">
-                                <p>null</p>
-                            </div>
-                            <div class="unit">
-                                <p>null</p>
-                            </div>
-                        </div>
+                        {% for item in leftToRender %}
+                        <select
+                            class="form-select"
+                            aria-label="Default select example"
+                        >
+                            <option selected>null</option>
+                            {% for item in mnemonicsToRender %}
+                                <option value="1">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="commandScreen">
-                    Command
-                    <div>
-                        <button>Simple command</button>
-                    </div>
-                </div>
-            </div>
-            <div class="alertsContainer">
-                Alerts
-                <div>
-                    <button>Simple command</button>
-                </div>
-            </div>
+            
         </main>
+            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button type="button" class="btn btn-success">Save Changes</button>
         <footer></footer>
     </body>
 </html>
-
-<script>
-    const socket = new WebSocket("ws://localhost:8000/ws/telemetry/");
-
-    socket.onmessage = function (event) {
-        console.log("Received:", event.data); // Display telemetry data
-        tm_packet = JSON.parse(JSON.parse(event.data));
-        tm_packet.telemetry.forEach((element) => {
-            console.log(
-                "Updating " + element.mnemonic + " with value: " + element.data
-            );
-            try {
-                valDiv = document.getElementById(element.mnemonic + "_val");
-                valDiv.innerText = element.data;
-            } catch (error) {
-                console.log("No div found for " + element.mnemonic);
-            }
-        });
-    };
-
-    socket.onopen = function () {
-        console.log("WebSocket connected!");
-    };
-
-    socket.onclose = function () {
-        console.log("WebSocket disconnected!");
-    };
-</script>
