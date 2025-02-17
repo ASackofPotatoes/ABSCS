@@ -49,6 +49,7 @@ async def tcp_client(ip, port):
             await writer.wait_closed()
 
     except (OSError, asyncio.TimeoutError, ConnectionRefusedError) as e:
+        channel_layer = get_channel_layer()
         # Handle cases where the connection fails to open
         await channel_layer.group_send(
             "connection_group",
