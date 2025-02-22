@@ -8,6 +8,7 @@ import asyncio
 from django.urls import reverse
 from django.http import HttpResponse
 from page.models import Page
+from .models import Mission
 MAX_MNEMONICS = 12
 
 
@@ -22,6 +23,14 @@ def getAllPages():
         })
     return pageList
 
+def getAllMissions():
+    missions = Mission.objects.all()
+    missionList = []
+    for mission in missions:
+        missionList.append({
+            "name": mission.name,
+        })
+    return missionList
 
 @csrf_exempt
 def startConnection(request):
@@ -37,5 +46,6 @@ def startConnection(request):
 
 
 def index(request):
-    return render(request, "index.html", {"listPages": getAllPages()})
+    return render(request, "index.html", {"listPages": getAllPages(),
+                                          "missionList" : getAllMissions()})
 # Create your views here.
