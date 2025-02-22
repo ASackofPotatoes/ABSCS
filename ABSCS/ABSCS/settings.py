@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'page',
     'dashboard',
+    'settings',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,13 +68,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ABSCS.context_processors.header_data'
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'ABSCS.wsgi.application'
-ASGI_APPLICATION =  'ABSCS.asgi.application'
+ASGI_APPLICATION = 'ABSCS.asgi.application'
 
 # Configure the channel layer (in-memory for now, but Redis is recommended)
 CHANNEL_LAYERS = {
@@ -130,8 +132,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Optional, if you have a static folder in the project
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Collects static files here
+# Optional, if you have a static folder in the project
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# Collects static files here
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

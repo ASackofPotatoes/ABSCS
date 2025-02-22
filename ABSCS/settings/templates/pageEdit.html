@@ -1,0 +1,51 @@
+{% load static %} {% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="{% static 'styles/pageEdit.css' %}" />
+    {% bootstrap_css %} {% bootstrap_javascript %}
+    <head>
+        <meta charset="UTF-8" />
+        <title>Edit Page - ABSCS</title>
+        <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
+    </head>
+    <body>
+        {% include 'header.html' %}
+        <form method="POST" action="{% url 'edit_page_api' id=page.id%}">
+            {% csrf_token %}
+            <label for="pageTitle">Page Title: </label>
+            <input type="text" name="pageTitle" class="pageTitle" value='{{ page.title }}'></input>
+            <main>
+                <div class="mnemonicsAlertContainer">
+                    <div class="mnemonicsContainer">
+                        Mnemonics
+                        <div class="mnemonicsScreen">
+                            {% for selectedItems in preselectedMnemonics %}
+                            <select name="mnemonic_{{ forloop.counter }}"
+                                class="form-select"
+                                aria-label="Default select example"
+                            >   
+                                
+                                    
+                                    {% for item in mnemonicsToRender %}
+                                        
+                                            <option value="{{ item.id }}" {% if selectedItems.id == item.id %}selected{% endif %}>{{ item.name }}</option>
+                                        
+                                    {% endfor %}
+                                
+                            </select>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+
+                
+            </main>
+                <a  href="{% url 'edit_pages' %}">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                </a>
+                <button class="btn btn-success" type="submit">Save Changes</button>
+        </form>
+        <footer></footer>
+    </body>
+</html>
