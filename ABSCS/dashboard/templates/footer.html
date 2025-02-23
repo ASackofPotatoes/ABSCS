@@ -1,0 +1,49 @@
+<footer class="d-flex flex-column flex-grow">
+    <div
+        class="container-fluid flex-column flex-grow"
+        style="height: 100%"
+    >
+        <div class="row align-items-center footer-row">
+            <div
+                class="footer-mission col-auto d-flex align-items-center"
+            >
+                <div id="missionFooterText">Mission: [Not connected] </div>
+            </div>
+            <div
+                class="footer-conn-status col d-flex align-items-center"
+            >
+                <div id="connectionFooterText">Connection Status: [Not connected]</div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+const socket = new WebSocket("ws://localhost:8000/ws/connection/");
+    connFooterText = document.getElementById("connectionFooterText")
+    missionFooterText = document.getElementById("missionFooterText")
+    socket.onmessage = function (event) {
+        data = JSON.parse(event.data);
+        if (data.status == "connection_success") {
+            missionFooterText.innerText = "Mission: " + data.mission_name
+            connFooterText.innerText = "Connection Status: CONNECTED to " + data.profile_name
+            connFooterText.parentElement.style.backgroundColor = "#aeea94"
+        }
+        if (data.status == "connection_lost") {
+            connFooterText.innerText = "Connection Status: Lost connection with data server." 
+            connFooterText.parentElement.style.backgroundColor = "#e0676e"
+            connFooterText.style.color = "#FFFFFF"
+        }
+    };
+
+    socket.onopen = function () {
+        console.log("Data connection WebSocket connected!");
+    };
+
+    socket.onclose = function () {
+        connFooterText.innerText = "Connection Status: Disconnected from ABSCS web server."
+        connFooterText.parentElement.style.backgroundColor = "#d9424a"
+        connFooterText.style.color = "#FFFFFF"
+        console.log("Data connection WebSocket disconnected!");
+    };
+</script>
