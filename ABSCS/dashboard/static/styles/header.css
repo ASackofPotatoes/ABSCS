@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header button {
+    display: block;
+}
+
+/*Header*/
+header .pageTitleLink {
+    display: inline;
+    text-decoration: none;
+    font-size: 2.6em;
+    color: black;
+    vertical-align: middle;
+}
+
+header .sidebar {
+    display: inline;
+    margin: 1em;
+}
+header .logo {
+    display: inline;
+    vertical-align: middle;
+    margin: 1em;
+    margin-left: 0.5em;
+}
+#settingLogo {
+    display: inline;
+    float: right;
+    margin: 1em;
+}
+header .navbar-collapse {
+    direction: rtl;
+}
+header .offcanvas-body * {
+    display: block;
+}
