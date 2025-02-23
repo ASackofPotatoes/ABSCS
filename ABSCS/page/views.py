@@ -23,9 +23,9 @@ def view_page(request, id):
         pageId=id).values_list('mnemonicId'))
     mnemonics = []
     try:
-        for item in mnemonicIds[0]:
+        for item in mnemonicIds:
             mnemonics.append(
-                list(Mnemonic.objects.filter(id=item).values())[0])
+                list(Mnemonic.objects.filter(id=item[0]).values())[0])
     except:
         pass
 
