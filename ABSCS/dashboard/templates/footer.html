@@ -19,10 +19,10 @@
 </footer>
 
 <script>
-const socket = new WebSocket("ws://localhost:8000/ws/connection/");
+const connectionSocket = new WebSocket("ws://localhost:8000/ws/connection/");
     connFooterText = document.getElementById("connectionFooterText")
     missionFooterText = document.getElementById("missionFooterText")
-    socket.onmessage = function (event) {
+    connectionSocket.onmessage = function (event) {
         data = JSON.parse(event.data);
         if (data.status == "connection_success") {
             missionFooterText.innerText = "Mission: " + data.mission_name
@@ -36,11 +36,11 @@ const socket = new WebSocket("ws://localhost:8000/ws/connection/");
         }
     };
 
-    socket.onopen = function () {
+    connectionSocket.onopen = function () {
         console.log("Data connection WebSocket connected!");
     };
 
-    socket.onclose = function () {
+    connectionSocket.onclose = function () {
         connFooterText.innerText = "Connection Status: Disconnected from ABSCS web server."
         connFooterText.parentElement.style.backgroundColor = "#d9424a"
         connFooterText.style.color = "#FFFFFF"

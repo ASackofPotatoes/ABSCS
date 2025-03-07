@@ -62,9 +62,9 @@
 </html>
 
 <script>
-    const socket = new WebSocket("ws://localhost:8000/ws/telemetry/");
+    const telemetrySocket = new WebSocket("ws://localhost:8000/ws/telemetry/");
 
-    socket.onmessage = function (event) {
+    telemetrySocket.onmessage = function (event) {
         console.log("Received:", event.data); // Display telemetry data
         tm_packet = JSON.parse(JSON.parse(event.data));
         tm_packet.telemetry.forEach((element) => {
@@ -80,11 +80,11 @@
         });
     };
 
-    socket.onopen = function () {
+    telemetrySocket.onopen = function () {
         console.log("WebSocket connected!");
     };
 
-    socket.onclose = function () {
+    telemetrySocket.onclose = function () {
         console.log("WebSocket disconnected!");
     };
 </script>
