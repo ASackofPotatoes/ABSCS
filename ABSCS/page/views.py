@@ -1,58 +1,30 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponse
-from .models import Mnemonic, Page, PageHasMnemonic
+from .models import Mnemonic, Page, PageMnemonic
 
 MAX_MNEMONICS = 12
 
 
-def getAllPages():
-    pages = Page.objects.all()
-    pageList = []
-    for page in pages:
-        pageList.append({
-            "title": page.title,
-            "url": reverse("view", kwargs={"id": page.id})
-        })
-    return pageList
-
-
 def view_page(request, id):
     page = list(Page.objects.filter(id=id).values())[0]
-    mnemonicIds = list(PageHasMnemonic.objects.filter(
-        pageId=id).values_list('mnemonicId'))
-    mnemonics = []
-    try:
-        for item in mnemonicIds:
-            mnemonics.append(
-                list(Mnemonic.objects.filter(id=item[0]).values())[0])
-    except:
-        pass
+    print(page)
+    mnemonics = 12*[None]
 
-    leftToRender = 0
+    mnemonicsToAdd = PageMnemonic.objects.filter(page_id=page['id'])
 
-    if (len(mnemonics) >= MAX_MNEMONICS):
-        leftToRender = 0
-    else:
-        leftToRender = MAX_MNEMONICS - len(mnemonics)
+    for item in mnemonicsToAdd:
+        if item == None or item.mnemonic_id == -1:
+            continue
+        currentMnemonic = Mnemonic.objects.get(id=item.mnemonic_id)
+        mnemonics[item.position-1] = currentMnemonic
 
     context = {
-        "page": page,
-        "mnemonics": mnemonics[:MAX_MNEMONICS],
-        "leftToRender": range(leftToRender),
-        "listPages": getAllPages()
+        "mnemonics": mnemonics,
+        "page": page
     }
 
     return render(request, "page.html", context)
-
-
-def edit(request):
-    mnemonics = list(Mnemonic.objects.all().values())
-    context = {
-        "mnemonicsToRender": mnemonics,
-        "leftToRender": range(MAX_MNEMONICS)
-    }
-    return render(request, "pageEdit.html", context)
 
 
 def add_page(request):

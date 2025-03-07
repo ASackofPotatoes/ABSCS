@@ -1,5 +1,6 @@
 {% load static %}
 <header>
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}" />
     <button
         class="btn btn-link"
         type="button"
@@ -39,7 +40,7 @@
             ></button>
         </div>
         <div class="offcanvas-body">
-            {% for item in listPages %}
+            {% for item in pageList %}
             <a href="{{ item.url }}">{{ item.title }}</a>
             {% endfor %}
         </div>
@@ -80,7 +81,7 @@
             ></button>
         </div>
         <div class="offcanvas-body">
-            <a href="">Configure Pages</a>
+            <a href="{% url 'edit_pages' %}">Configure Pages</a>
             <hr style="height: 1px" width="100%" height="1px" size="2" />
             <a href="">Configure TM & TC Database</a>
             <hr style="height: 1px" width="100%" height="1px" size="2" />

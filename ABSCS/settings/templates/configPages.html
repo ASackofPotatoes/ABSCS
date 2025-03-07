@@ -1,0 +1,17 @@
+{% load static %} {% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="{% static 'styles/pageEdit.css' %}" />
+    {% bootstrap_css %} {% bootstrap_javascript %}
+    <head>
+        <meta charset="UTF-8" />
+        <title>Configure Pages - ABSCS</title>
+        <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
+    </head>
+    <body>
+        {% include 'header.html' %} {% for item in pagesToConfig %}
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        {% endfor %}
+    </body>
+</html>

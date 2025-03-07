@@ -10,13 +10,13 @@
     </head>
     {% include 'header.html' %}
     <body>
-        <h1 class="pageTitle">Battery System</h1>
+        <h1 class="pageTitle">{{ page.title }}</h1>
         <main>
             <div class="mnemonicsAlertContainer">
                 <div class="mnemonicsContainer">
                     Mnemonics
                     <div class="mnemonicsScreen">
-                        {% for item in mnemonics %}
+                        {% for item in mnemonics %} {% if item is not None %}
                         <div class="mnemonic">
                             <div class="name">
                                 <p>{{ item.name }}</p>
@@ -28,7 +28,7 @@
                                 <p>{{ item.unit }}</p>
                             </div>
                         </div>
-                        {% endfor %} {% for item in leftToRender %}
+                        {% else %}
                         <div class="mnemonic">
                             <div class="name">
                                 <p>null</p>
@@ -40,7 +40,7 @@
                                 <p>null</p>
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endif %} {% endfor %}
                     </div>
                 </div>
                 <div class="commandScreen">
