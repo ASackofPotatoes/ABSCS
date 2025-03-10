@@ -19,6 +19,23 @@ class TelemetryConsumer(AsyncWebsocketConsumer):
         data = event["data"]
         await self.send(text_data=json.dumps(data))
 
+class AlarmConsmer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+        await self.channel_layer.group_add("alarm_group", self.channel_name)
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("alarm_group", self.channel_name)
+
+    async def receive(self, text_data):
+        # Handle messages from the frontend if needed
+        pass
+
+    async def send_alarm(self, event):
+        """Broadcasts alarm occurrence to all connected clients"""
+        data = event["data"]
+        await self.send(text_data=json.dumps(data))
+
 class ConnectionConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()

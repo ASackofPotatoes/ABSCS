@@ -3,6 +3,7 @@ import socket
 
 from channels.layers import get_channel_layer
 from django.core.cache import cache
+from ..alarms.check_alarms import check_alarms
 
 async def tcp_client(ip, port, mission_name:str=None, profile_name:str=None):
     try:
@@ -37,6 +38,7 @@ async def tcp_client(ip, port, mission_name:str=None, profile_name:str=None):
                     "telemetry_group",
                     {"type": "send_telemetry", "data": data.decode("utf-8")}
                 )
+                check_alarms(data.decode("utf-8"))
 
         except (asyncio.CancelledError, ConnectionResetError):
             await channel_layer.group_send(

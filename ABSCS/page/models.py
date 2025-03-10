@@ -4,7 +4,7 @@ from django.db import models
 class Mnemonic(models.Model):
     id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=200)
-    name = models.CharField(max_length=200, default="noName")
+    name = models.CharField(max_length=200, unique=True) 
     value = models.CharField(max_length=200)
     unit = models.CharField(max_length=200)
 
