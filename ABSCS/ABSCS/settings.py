@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'page',
     'dashboard',
     'settings',
+    'alarms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

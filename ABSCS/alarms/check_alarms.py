@@ -14,7 +14,7 @@ def check_alarms(telem_packet:str|dict):
             alarm = Alarms.objects.get(mission_id=mission_id, mnemonic_name=telem("mnemonic"))
             telem_val = telem("value")
             if alarm.yellow_low < telem_val and telem_val < alarm.yellow_high:
-                pass #No alarm!
+                pass #Value within limits
             elif telem_val < alarm.yellow_low:
                 if telem_val < alarm.red_low:
                     send_alarm_to_ws("red_low", telem("mnemonic"), alarm.red_low, telem_val, telem("timestamp"), alarm.message) 

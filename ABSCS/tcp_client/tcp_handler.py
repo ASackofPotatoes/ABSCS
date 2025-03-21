@@ -3,7 +3,7 @@ import socket
 
 from channels.layers import get_channel_layer
 from django.core.cache import cache
-from ..alarms.check_alarms import check_alarms
+from alarms.check_alarms import check_alarms
 
 async def tcp_client(ip, port, mission_name:str=None, profile_name:str=None):
     try:
