@@ -1,6 +1,6 @@
 #This function takes in a telemetry JSON and checks all values for alarms. 
 import json
-from .models import Alarms
+from alarms.models import Alarms
 from django.core.cache import cache
 from channels.layers import get_channel_layer
 
