@@ -23,4 +23,5 @@ urlpatterns = [
     path("dashboard/", include("dashboard.urls")),
     path("", include("dashboard.urls")),
     path('admin/', admin.site.urls),
+    path("missions/", include("missions.urls"))
 ]

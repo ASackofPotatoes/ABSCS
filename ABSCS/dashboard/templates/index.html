@@ -220,6 +220,29 @@ btn.addEventListener("click", () => {
                 profileDropdownMenu.innerHTML = '<li><span class="dropdown-item text-muted">Loading...</span></li>';
                 profileButton.textContent = "Profiles:";
 
+                // Set the mission cache variable in the backend.
+                fetch('missions/api/set-mission', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ mission_name: selectedMission })
+                })
+                .then(response => {
+                    // Check if the response status is not 200
+                    if (response.status !== 200) {
+                        console.error("Error setting mission in backend server.");
+                        return; // Optionally return early if error occurs
+                    }
+                    return response.json(); // Return the JSON data from the response
+                })
+                .catch(error => {
+                    // Handle any error that occurs during the fetch or processing
+                    console.error("An error occurred:", error);
+                });
+
+
+                //This should probably only happen if the above setting didn't have an error.
                 // Fetch profiles from backend
                 fetch('/api/get-connection-profiles', {
                     method: 'POST',
