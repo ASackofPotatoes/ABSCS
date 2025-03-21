@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'page',
     'dashboard',
     'settings',
+    'missions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,9 +94,14 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'dbs' / 'missions' / 'Ex-Alta 3.sqlite3',
+    },
+    'Ex-Alta 3' : {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'dbs' / 'missions' / 'Ex-Alta 3.sqlite3',
     }
 }
 
