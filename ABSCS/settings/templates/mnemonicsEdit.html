@@ -1,0 +1,169 @@
+{% load static %} {% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="{% static 'styles/pageEdit.css' %}" />
+    {% bootstrap_css %} {% bootstrap_javascript %}
+    <head>
+        <meta charset="UTF-8" />
+        <title>Edit Page - ABSCS</title>
+        <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
+    </head>
+    <style>
+        .table-container {
+            width: 90%; /* Limits table width */
+            max-width: 800px; /* Prevents it from becoming too wide */
+            margin: auto; /* Centers the table */
+            overflow-x: auto; /* Enables scrolling if needed */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .table-container img {
+            max-width: 1em;
+            max-height: 1em; /* Limits image height */
+            object-fit: contain; /* Ensures full image is visible */
+        }
+
+    </style>
+    <body>
+        {% include 'header.html' %}
+            <main>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Unit</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for mnemonic in mnemonics %}
+                            <tr data-id="mnemonic{{ mnemonic.id }}" data-mnemonic="{{ mnemonic }}" id="mnemonic{{ mnemonic.id }}">
+                                <td class="mnemonic_name_field">
+                                    {{ mnemonic.name }}
+                                </td>
+                                <td>
+                                    null
+                                </td>
+                                <td>
+                                    {{ mnemonic.unit }}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ mnemonic.id }}">
+                                        <img src="{% static 'images/edit_icon.png' %}" href="{% url 'dashboard' %}" alt="" />
+                                    </button>
+                                    <div class="modal fade" id="editModal{{ mnemonic.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel">Edit {{ mnemonic.name }}:</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <form onsubmit="update_mnemonic(event, '{{ mnemonic.id }}'); return false;">
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <div>
+                                                        <label for="name">Name</label>
+                                                        <input type="text" name="name" value="{{ mnemonic.name }}">
+                                                    </div>
+                                                    <div>
+                                                        <label for="type">Type:</label>
+                                                        <input type="text" name="type" value="null">
+                                                    </div>
+                                                    <div>
+                                                        <label for="unit">Unit:</label>
+                                                        <input type="text" name="unit" value="{{ mnemonic.unit }}">
+                                                    </div>
+                                                </div>
+                                              
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Change</button>
+                                                    </div>
+                                                </form>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mnemonic.id }}">
+                                        <img src="{% static 'images/trash_icon.png' %}" href="{% url 'dashboard' %}" alt="" />
+                                    </button>
+                                    <div class="modal fade" id="exampleModal{{ mnemonic.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel">Delete {{ mnemonic.name }}?</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              Are you sure you want to delete {{ mnemonic.name }}?
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                              <button type="button" class="btn btn-primary">Yes</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+                <a  href="{% url 'edit_pages' %}">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                </a>
+                <button class="btn btn-success" type="submit">Save Changes</button>
+        </form>
+        <footer></footer>
+    </body>
+
+    <script>
+
+        function update_mnemonic(event, id){
+
+            let mnemonic_name = event.target.name.value;
+            let mnemonic_type = event.target.type.value;
+            let mnemonic_unit = event.target.unit.value;
+
+            let table = document.getElementById("mnemonic"+String(id));
+            let nameInput = form.querySelector(".mnemonic_name_field");
+
+            let editUrl = "{% url 'edit_mnemonic' id=0 %}".replace("0", id);
+            console.log(editUrl);
+            
+            fetch(editUrl,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    
+                },
+                body: JSON.stringify({ name: mnemonic_name, type: mnemonic_type, unit: mnemonic_unit })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Server response:", data);
+                console.log(data['name']);
+                nameInput.value = data["name"];
+            })
+            .catch(error => console.error('Error', error));
+        
+            
+        }
+        
+    </script>
+</html>

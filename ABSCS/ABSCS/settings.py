@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'page',
     'dashboard',
     'settings',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from page.models import Mnemonic, Page, PageMnemonic
+from django.core.exceptions import BadRequest
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import MnemonicSerializer
+import json
 # Create your views here.
 
 MAX_MNEMONICS = 12
@@ -67,3 +73,36 @@ def edit_page(request, id):
         "leftToRender": range(MAX_MNEMONICS),
     }
     return render(request, "pageEdit.html", context)
+
+def edit_mnemonics(request):
+    mnemonics = Mnemonic.objects.all().values()
+
+    context = {
+        'mnemonics': mnemonics
+    }
+
+    return render(request, 'mnemonicsEdit.html', context)
+
+@api_view(['POST'])
+def edit_mnemonic(request, id):
+
+    if request.method == "POST":
+            
+            data = json.loads(request.body)
+            print(data)
+            mnemonic = Mnemonic.objects.get(id=id)
+            serializer = MnemonicSerializer(mnemonic, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        raise BadRequest('Invalid request.')
+
+def add_mnemonic(request):
+    pass
+
+@api_view(['GET'])
+def get_all_mnemonics(request):
+    mnemonics = Mnemonic.objects.all()
+    serializer = MnemonicSerializer(mnemonics, many=True)
+    return Response(serializer.data)
