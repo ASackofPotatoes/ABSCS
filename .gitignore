@@ -330,3 +330,8 @@ tests/.coverage*
 build/
 tests/report/
 tests/screenshots/
+
+
+#Development copies of databases
+db_copies/
+
