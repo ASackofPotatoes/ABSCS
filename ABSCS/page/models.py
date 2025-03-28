@@ -8,6 +8,8 @@ class Mnemonic(models.Model):
     value = models.CharField(max_length=200)
     unit = models.CharField(max_length=200)
 
+    model_type = "mission_config"
+
     def __str__(self):
         return self.name
 
@@ -19,6 +21,7 @@ class PageMnemonic(models.Model):
         'Mnemonic', on_delete=models.SET_NULL, null=True)
     position = models.PositiveIntegerField()
 
+    model_type = "mission_config"
     class Meta:
         unique_together = ('page', 'position')
 
@@ -30,5 +33,6 @@ class Page(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
 
+    model_type = "mission_config"
     def __str__(self):
         return self.title

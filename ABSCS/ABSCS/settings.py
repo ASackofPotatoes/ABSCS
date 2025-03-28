@@ -109,6 +109,7 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = ["missions.db_router.MissionDatabaseRouter"]
 
 
 # Password validation
