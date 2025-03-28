@@ -10,7 +10,8 @@ import json
 from django.urls import reverse
 from django.http import HttpResponse
 from page.models import Page
-from .models import Mission, Connection_Profile
+from .models import Connection_Profile
+from missions.models import Mission
 MAX_MNEMONICS = 12
 
 
@@ -26,7 +27,7 @@ def getAllPages():
     return pageList
 
 def getAllMissions():
-    missions = Mission.objects.all()
+    missions = Mission.objects.using("default").all()
     missionList = []
     for mission in missions:
         missionList.append({
@@ -34,22 +35,6 @@ def getAllMissions():
         })
     return missionList
 
-def getProfilesFromMission(mission_name=None, mission_id=None):
-    if mission_name and mission_id:
-        raise ValueError("Only one of mission_name and mission_id should be specified")
-    elif not mission_name and not mission_id:
-        raise ValueError("One of mission_name and mission_id needs to be specified")
-    if mission_name:
-        mission = Mission.objects.get(name=mission_name)
-        mission_id = mission.id
-    profiles = Connection_Profile.objects.filter(mission_id=mission_id)
-    profileList = []
-    for profile in profiles:
-        profileList.append({"name" : profile.name,
-                            "protocol" : profile.protocol,
-                            "ip" : profile.ip,
-                            "port" : profile.port})
-    return profileList
     
 @csrf_exempt
 def startConnection(request):
@@ -60,18 +45,14 @@ def startConnection(request):
             mission_name = data.get('mission_name')
             profile_name = data.get('profile_name')
 
-            if (cache.get("mission_name") is mission_name) and (cache.get("profile_name") is profile_name):
+            if (cache.get("current_mission") is mission_name) and (cache.get("profile_name") is profile_name):
                 return JsonResponse({'error': 'Already connected to this profile!'})
             # Validate inputs
             if not mission_name or not profile_name:
                 return JsonResponse({'error': 'mission_name and profile_name are required.'}, status=400)
 
+            profile = Connection_Profile.objects.using(mission_name).get(name=profile_name)
 
-            # Fetch the Mission and Connection Profile from the database
-            mission = Mission.objects.get(name=mission_name)
-            profile = Connection_Profile.objects.get(mission_id=mission.id, name=profile_name)
-
-            # Extract connection details
             ip = profile.ip
             port = profile.port
 
@@ -83,8 +64,6 @@ def startConnection(request):
 
             return JsonResponse({"message": f"Connection attempted to {ip}:{port}"})
 
-        except Mission.DoesNotExist:
-            return JsonResponse({'error': 'Mission not found.'}, status=404)
         except Connection_Profile.DoesNotExist:
             return JsonResponse({'error': 'Connection Profile not found.'}, status=404)
         except json.JSONDecodeError:
@@ -99,13 +78,20 @@ def getConnectionProfiles(request):
     if request.method == 'POST':
         data = json.loads(request.body)  # Parse raw JSON body
         mission_name = data.get('mission_name')
+        profiles = Connection_Profile.objects.using(mission_name).all()
+        profileList = []
+        for profile in profiles:
+            profileList.append({"name" : profile.name,
+                                "protocol" : profile.protocol,
+                                "ip" : profile.ip,
+                                "port" : profile.port})
         if not mission_name:
             return JsonResponse({'error': 'Missing mission_name parameter.'}, status=400)
-        return JsonResponse({"profiles" : getProfilesFromMission(mission_name=mission_name)})
+        return JsonResponse({"profiles" : profileList})
     return JsonResponse({'error': 'Request must be POST'}, status=405)
 
 
 def index(request):
-    return render(request, "index.html", {"listPages": getAllPages(),
+    return render(request, "index.html", {"listPages": [],
                                           "missionList" : getAllMissions()})
 # Create your views here.

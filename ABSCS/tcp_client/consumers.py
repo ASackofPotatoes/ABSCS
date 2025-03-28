@@ -22,10 +22,10 @@ class TelemetryConsumer(AsyncWebsocketConsumer):
 class ConnectionConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-        if cache.get("mission_name") and cache.get("profile_name"):
+        if cache.get("current_mission") and cache.get("profile_name"):
             #Send current connection status, which is set by tcp handler on success
             await self.send(text_data=json.dumps({"status": "connection_success",
-                                                "mission_name" : cache.get("mission_name"),
+                                                "mission_name" : cache.get("current_mission"),
                                                 "profile_name" : cache.get("profile_name")}))
         
         await self.channel_layer.group_add("connection_group", self.channel_name)
@@ -42,7 +42,7 @@ class ConnectionConsumer(AsyncWebsocketConsumer):
         mission_name = event["mission_name"]
         profile_name = event["profile_name"]
         
-        cache.set("mission_name", mission_name, timeout=None)
+        cache.set("current_mission", mission_name, timeout=None)
         cache.set("profile_name", profile_name, timeout=None)
 
         await self.send(text_data=json.dumps({
@@ -51,7 +51,8 @@ class ConnectionConsumer(AsyncWebsocketConsumer):
             "profile_name": profile_name
         }))
 
-    
+    #TODO: Not sure if this and the above connection_success methods are correct in altering values in the cache. 
+    # Seems like it should only be set by tcp_handler 
     async def connection_lost(self, event):
         message = event["message"]
         cache.set("current_mission", None, timeout=None)

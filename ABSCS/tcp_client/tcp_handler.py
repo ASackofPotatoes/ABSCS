@@ -1,5 +1,4 @@
 import asyncio
-import socket
 
 from channels.layers import get_channel_layer
 from django.core.cache import cache

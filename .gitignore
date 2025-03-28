@@ -334,4 +334,5 @@ tests/screenshots/
 
 #Development copies of databases
 db_copies/
+*.sqlite3
 
