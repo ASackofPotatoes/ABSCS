@@ -11,7 +11,7 @@ def setMission(request):
         mission_name = data.get('mission_name')
         if not mission_name:
             return JsonResponse({'error': 'Missing mission_name parameter.'}, status=400)
-        cache.set("mission_name", mission_name)
+        cache.set("current_mission", mission_name)
         return JsonResponse({}, status=200)
     return JsonResponse({'error': 'Request must be POST'}, status=405)
 
