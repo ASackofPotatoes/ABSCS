@@ -35,7 +35,46 @@
     </style>
     <body>
         {% include 'header.html' %}
+        
             <main>
+
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addModal">
+                    Add a new mnemonic
+                </button>
+                
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add a new mnemonic: </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form onsubmit="add_mnemonic(event)">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <div>
+                                            <label for="name">Name:</label>
+                                            <input type="text" id="name" name="name">
+                                        </div>
+                                        <div>
+                                            <label for="type">Type:</label>
+                                            <input type="text" id="type" name="type">
+                                        </div>
+                                        <div>
+                                            <label for="unit">Unit:</label>
+                                            <input type="text" id="unit" name="unit">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -52,10 +91,10 @@
                                 <td class="mnemonic_name_field">
                                     {{ mnemonic.name }}
                                 </td>
-                                <td>
+                                <td class="mnemonic_type_field">
                                     null
                                 </td>
-                                <td>
+                                <td class="mnemonic_unit_field">
                                     {{ mnemonic.unit }}
                                 </td>
                                 <td>
@@ -111,8 +150,10 @@
                                               Are you sure you want to delete {{ mnemonic.name }}?
                                             </div>
                                             <div class="modal-footer">
+                                            <form onsubmit="delete_mnemonic(event, '{{ mnemonic.id }}')">
                                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                              <button type="button" class="btn btn-primary">Yes</button>
+                                              <button type="submit" class="btn btn-primary">Yes</button>
+                                            </form>
                                             </div>
                                           </div>
                                         </div>
@@ -124,29 +165,27 @@
                     </table>
                 </div>
             </main>
-                <a  href="{% url 'edit_pages' %}">
-                    <button type="button" class="btn btn-secondary">Cancel</button>
-                </a>
-                <button class="btn btn-success" type="submit">Save Changes</button>
-        </form>
+        
         <footer></footer>
     </body>
 
     <script>
 
-        function update_mnemonic(event, id){
-
-            let mnemonic_name = event.target.name.value;
-            let mnemonic_type = event.target.type.value;
-            let mnemonic_unit = event.target.unit.value;
-
-            let table = document.getElementById("mnemonic"+String(id));
-            let nameInput = form.querySelector(".mnemonic_name_field");
-
-            let editUrl = "{% url 'edit_mnemonic' id=0 %}".replace("0", id);
-            console.log(editUrl);
+        function add_mnemonic(event){
             
-            fetch(editUrl,{
+
+            let mnemonic_name = event.target.elements["name"].value;
+            let mnemonic_type = event.target.elements["type"].value;
+            let mnemonic_unit = event.target.elements["unit"].value;
+
+            /*
+            let nameInput = table.querySelector(".mnemonic_name_field");
+            let typeInput = table.querySelector(".mnemonic_type_field");
+            let unitInput = table.querySelector(".mnemonic_unit_field");
+            */
+            let addUrl = "{% url 'add_mnemonic' %}"
+            
+            fetch(addUrl,{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -157,8 +196,61 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Server response:", data);
+                table.innerHTML = "";
+            })
+            .catch(error => console.error('Error', error));
+        }
+
+        function delete_mnemonic(event, id){
+            let table = document.getElementById("mnemonic"+String(id));
+
+            let editUrl = "{% url 'edit_mnemonic' id=0 %}".replace("0", id);
+
+            fetch(editUrl,{
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Server response:", data);
+                table.innerHTML = "";
+            })
+            .catch(error => console.error('Error', error));
+        }
+
+        function update_mnemonic(event, id){
+
+            let mnemonic_name = event.target.name.value;
+            let mnemonic_type = event.target.type.value;
+            let mnemonic_unit = event.target.unit.value;
+            
+            let table = document.getElementById("mnemonic"+String(id));
+            let nameInput = table.querySelector(".mnemonic_name_field");
+            let typeInput = table.querySelector(".mnemonic_type_field");
+            let unitInput = table.querySelector(".mnemonic_unit_field");
+            
+            let editUrl = "{% url 'edit_mnemonic' id=0 %}".replace("0", id);
+            console.log(editUrl);
+            
+            fetch(editUrl,{
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    
+                },
+                body: JSON.stringify({ name: mnemonic_name, type: mnemonic_type, unit: mnemonic_unit })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Server response:", data);
                 console.log(data['name']);
-                nameInput.value = data["name"];
+                nameInput.innerHTML = data["name"];
+                typeInput.innerHTML = data["type"];
+                unitInput.innerHTML = data["unit"];
             })
             .catch(error => console.error('Error', error));
         

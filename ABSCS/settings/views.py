@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.http import JsonResponse
 from page.models import Mnemonic, Page, PageMnemonic
 from django.core.exceptions import BadRequest
 from rest_framework.decorators import api_view
@@ -77,16 +78,29 @@ def edit_page(request, id):
 def edit_mnemonics(request):
     mnemonics = Mnemonic.objects.all().values()
 
+    if len(mnemonics) > 1:
+        mnemonics = mnemonics[1:]
+    else:
+        mnemonics = []
+    
     context = {
         'mnemonics': mnemonics
     }
 
     return render(request, 'mnemonicsEdit.html', context)
 
-@api_view(['POST'])
+@api_view(['POST', 'DELETE', 'PUT'])
 def edit_mnemonic(request, id):
+    
+    print("HERE")
 
-    if request.method == "POST":
+    if request.method == "DELETE":
+        mnemonic = get_object_or_404(Mnemonic, id=id)
+        mnemonic.delete()
+        return JsonResponse({'message': 'Mnemonic deleted successfully'}, status=200)
+    
+    
+    if request.method == "PUT":
             
             data = json.loads(request.body)
             print(data)
@@ -97,9 +111,22 @@ def edit_mnemonic(request, id):
                 return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         raise BadRequest('Invalid request.')
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+@api_view(['POST'])
 def add_mnemonic(request):
-    pass
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(data)
+        serializer = MnemonicSerializer(data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        raise BadRequest('Invalid request.')
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 @api_view(['GET'])
 def get_all_mnemonics(request):

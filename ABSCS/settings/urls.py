@@ -8,5 +8,5 @@ urlpatterns = [
     path("page/<int:id>", views.edit_page, name="edit_page"),
     path("mnemonics", views.edit_mnemonics, name="edit_mnemonics"),
     path("api/editmnemonic/<int:id>", views.edit_mnemonic, name="edit_mnemonic"),
-    path("api/addmnemonic", views.add_mnemonic, name="add_mnemonic")
+    path("api/addmnemonic", views.add_mnemonic, name="add_mnemonic"),
 ]
