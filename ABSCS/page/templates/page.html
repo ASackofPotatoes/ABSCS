@@ -4,14 +4,22 @@
 <html lang="en">
     <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
     {% bootstrap_css %} {% bootstrap_javascript %}
+    <style>
+        html,
+        body {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+        }
+    </style>
     <head>
         <meta charset="UTF-8" />
         <title>Wiki App</title>
     </head>
-    {% include 'header.html' %}
     <body>
+        {% include 'header.html' %}
         <h1 class="pageTitle">{{ page.title }}</h1>
-        <main>
+        <main class="d-flex flex-column flex-grow-1">
             <div class="mnemonicsAlertContainer">
                 <div class="mnemonicsContainer">
                     Mnemonics
@@ -19,19 +27,19 @@
                         {% for item in mnemonics %} {% if item is not None %}
                         <div class="mnemonic">
                             <div class="name">
-                                <p>{{ item.name }}</p>
+                                {{ item.name }}
                             </div>
                             <div id="{{ item.name }}_val" class="value">
-                                <p>{{ item.value }}</p>
+                                {{ item.value }}
                             </div>
                             <div class="unit">
-                                <p>{{ item.unit }}</p>
+                                {{ item.unit }}
                             </div>
                         </div>
                         {% else %}
                         <div class="mnemonic">
                             <div class="name">
-                                <p>null</p>
+                                null
                             </div>
                             <div class="value">
                                 <p>null</p>
@@ -57,14 +65,14 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+        {% include 'footer.html' %}
     </body>
 </html>
 
 <script>
-    const socket = new WebSocket("ws://localhost:8000/ws/telemetry/");
+    const telemetrySocket = new WebSocket("ws://localhost:8000/ws/telemetry/");
 
-    socket.onmessage = function (event) {
+    telemetrySocket.onmessage = function (event) {
         console.log("Received:", event.data); // Display telemetry data
         tm_packet = JSON.parse(JSON.parse(event.data));
         tm_packet.telemetry.forEach((element) => {
@@ -80,11 +88,11 @@
         });
     };
 
-    socket.onopen = function () {
+    telemetrySocket.onopen = function () {
         console.log("WebSocket connected!");
     };
 
-    socket.onclose = function () {
+    telemetrySocket.onclose = function () {
         console.log("WebSocket disconnected!");
     };
 </script>
