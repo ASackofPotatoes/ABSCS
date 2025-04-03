@@ -45,7 +45,54 @@
                     <button type="button" class="btn btn-secondary">Cancel</button>
                 </a>
                 <button class="btn btn-success" type="submit">Save Changes</button>
-        </form>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Delete Page
+                </button>
+            </form>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Page?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    Would you like to delete {{ page.title }}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" onclick="deletePage(event, '{{ page.id }}')">Yes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
         <footer></footer>
     </body>
 </html>
+
+<script>
+
+    function deletePage(event, id){
+        console.log("deleting ..");
+
+        let deleteUrl = "{% url 'edit_page_api' id=0 %}".replace("0", id);
+            console.log(deleteUrl);
+            
+            fetch(deleteUrl,{
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRFToken': "{{ csrf_token }}"
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => {
+                window.location.replace("{% url 'edit_pages' %}");
+            })
+            .catch(error => console.error('Error', error));
+    }
+</script>

@@ -12,8 +12,16 @@ import json
 
 MAX_MNEMONICS = 12
 
-
+#@api_view(['PUT', 'DELETE'])
 def edit_pages_api(request, id):
+
+    if request.method == "DELETE":
+        try:
+            Page.objects.filter(id=id).delete()
+            return redirect('edit_pages')
+        except:
+            return BadRequest
+
     if request.method == "POST":
         print(request.POST)
 
@@ -53,27 +61,29 @@ def edit_pages(request):
 
     return render(request, "configPages.html", {"pagesToConfig": pagesToConfig})
 
-
+#@api_view(['GET'])
 def edit_page(request, id):
-    page = Page.objects.get(id=id)
-    mnemonicsToAdd = PageMnemonic.objects.filter(page_id=page.id)
 
-    mnemonicsSelected = 12*[None]
+    if request.method == "GET":
+        page = Page.objects.get(id=id)
+        mnemonicsToAdd = PageMnemonic.objects.filter(page_id=page.id)
 
-    for item in mnemonicsToAdd:
-        if item == None or item.mnemonic_id == None:
-            continue
-        currentMnemonic = Mnemonic.objects.get(id=item.mnemonic_id)
-        mnemonicsSelected[item.position-1] = currentMnemonic
+        mnemonicsSelected = 12*[None]
 
-    mnemonicsToRender = list(Mnemonic.objects.all().values())
-    context = {
-        'preselectedMnemonics': mnemonicsSelected,
-        "page": page,
-        "mnemonicsToRender": mnemonicsToRender,
-        "leftToRender": range(MAX_MNEMONICS),
-    }
-    return render(request, "pageEdit.html", context)
+        for item in mnemonicsToAdd:
+            if item == None or item.mnemonic_id == None:
+                continue
+            currentMnemonic = Mnemonic.objects.get(id=item.mnemonic_id)
+            mnemonicsSelected[item.position-1] = currentMnemonic
+
+        mnemonicsToRender = list(Mnemonic.objects.all().values())
+        context = {
+            'preselectedMnemonics': mnemonicsSelected,
+            "page": page,
+            "mnemonicsToRender": mnemonicsToRender,
+            "leftToRender": range(MAX_MNEMONICS),
+        }
+        return render(request, "pageEdit.html", context)
 
 def edit_mnemonics(request):
     mnemonics = Mnemonic.objects.all().values()
