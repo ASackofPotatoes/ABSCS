@@ -1,5 +1,5 @@
 from django.urls import include, path
-from . import views
+from . import views, commands
 
 urlpatterns = [
     path("api/editpage/<int:id>", views.edit_pages_api, name="edit_page_api"),
@@ -9,4 +9,9 @@ urlpatterns = [
     path("mnemonics", views.edit_mnemonics, name="edit_mnemonics"),
     path("api/editmnemonic/<int:id>", views.edit_mnemonic, name="edit_mnemonic"),
     path("api/addmnemonic", views.add_mnemonic, name="add_mnemonic"),
+    
+    
+    #COMMANDS
+    path("commands", commands.edit_commands, name="edit_commands"),
+    path("api/addcommand", commands.add_command, name="add_command"),
 ]
