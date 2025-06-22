@@ -9,6 +9,7 @@
         <title>Edit Page - ABSCS</title>
         <link rel="icon" href="{% static 'images/satellitedish1.png' %}" />
     </head>
+    
     <style>
         .table-container {
             width: 90%; /* Limits table width */
@@ -21,9 +22,12 @@
             border-collapse: collapse;
         }
         th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
+        border: 1px solid #ccc;
+        padding: 8px;
+        }
+        thead th {
+        background-color: #f0f0f0;
+        font-weight: bold;
         }
 
         .table-container img {
@@ -32,7 +36,93 @@
             object-fit: contain; /* Ensures full image is visible */
         }
 
+        .command-wrapper {
+  max-width: 75%;       /* or whatever fixed width you want */
+  margin: 20px auto;      /* centers it on the page */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+        .command-header {
+            background-color: #b71c1c; /* Deep red */
+            color: white;
+            padding: 8px 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border: 1px solid #999;
+            border-bottom: none;
+            }
+
+            .command-tab {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            flex-grow: 1;
+            padding: 0;
+            }
+
+            .command-tab:hover {
+            text-decoration: underline;
+            }
+
+            .delete-btn {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            }
+
+            
+            .delete-btn:hover {
+            background-color: #c62828;
+            }
+
+            .save-button-container {
+            text-align: right;
+            margin-top: 20px;
+            padding-right: 10px; /* Adds space from right edge */
+            padding-bottom: 10px;
+            }
+
+            .save-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            }
+
+            .save-btn:hover {
+            background-color: #388e3c;
+            }
+
+            .opcode-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 10px;
+            }
+
+            .opcode-input-group label {
+            font-weight: bold;
+            min-width: 60px;
+            }
+
+            #opcode-input {
+            flex-grow: 1;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            }
+
     </style>
+    
     <body>
         {% include 'header.html' %}
         
@@ -41,7 +131,55 @@
                 <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addModal">
                     Add a new command
                 </button>
-                
+                <div class="command-wrapper">
+                    {% for command in commands %}
+                    <div class="command-header">
+                        <button class="command-tab" type="button" data-bs-toggle="collapse" data-bs-target="#Command{{ command.id }}" aria-expanded="false" aria-controls="{{ command.id }}">
+                        {{ command.name }}
+                    </button>
+                        <button class="delete-btn">DELETE</button>
+                    </div>
+                    
+                    <div class="collapse" id="Command{{ command.id }}">
+                        <div class="card card-body">
+                            <div class="opcode-input-group">
+                                <label for="opcode-input">Opcode:</label>
+                                <input type="text" id="opcode-input" name="opcode" placeholder="Enter opcode...">
+                            </div>
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr>
+                                    <th>PARAMETERS</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <td></td>
+                                    <td>TIMER</td>
+                                    <td>INT</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-dark"><i class="bi bi-pencil">Edit</i></button>
+                                        <button class="btn btn-sm btn-outline-dark"><i class="bi bi-trash">Delete</i></button>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td></td>
+                                    <td colspan="3"><button class="btn btn-outline-secondary w-100">+</button></td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                        </div>
+                        <div class="save-button-container">
+                            <button class="save-btn">SAVE</button>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+
+                <!-- 
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -90,16 +228,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for mnemonic in mnemonics %}
+                        {% for command in commands %}
                             <tr data-id="mnemonic{{ mnemonic.id }}" data-mnemonic="{{ mnemonic }}" id="mnemonic{{ mnemonic.id }}">
                                 <td class="mnemonic_name_field">
-                                    {{ mnemonic.name }}
+                                    {{ command.name }}
                                 </td>
                                 <td class="mnemonic_type_field">
-                                    null
+                                    {{ command.encoding_type }}
                                 </td>
                                 <td class="mnemonic_unit_field">
-                                    {{ mnemonic.unit }}
+                                    {% if command.encoding_type == "ASCII" %}
+                                    {{ command.ascii_content }}
+                                    {% else %}
+                                    {{ command.binary_content }}
+                                    {% endif %}
+
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ mnemonic.id }}">
@@ -168,6 +311,7 @@
                         </tbody>
                     </table>
                 </div>
+            -->
             </main>
         
         <footer></footer>
