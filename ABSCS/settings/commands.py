@@ -11,11 +11,6 @@ import json
 
 def edit_commands(request):
     commands = Command.objects.all().values()
-
-    if len(commands) > 1:
-        commands = commands[1:]
-    else:
-        commands = []
     
     context = {
         'commands': commands

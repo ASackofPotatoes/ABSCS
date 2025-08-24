@@ -122,7 +122,47 @@
             }
 
     </style>
-    
+    <script>
+        function generate_parameters(parameter, id){
+            //parse the parameter and return an html table of parameters
+            console.log("parameter being generated!");
+
+            parameters_list_unfiltered = parameter.split("[");
+            parameter_list = [];
+            parameters_list_unfiltered.forEach(element => {
+                end = element.indexOf(']');
+                if (element.substring(0,end) == ''){
+                    return;
+                }
+                parameter_list.push(element.substring(0, end));
+                
+            });
+
+            const command_div = document.getElementById('Command'+ id);
+            const command_parameters_table = command_div.querySelector('tbody');
+
+            var html_insert = ''
+
+            parameter_list.forEach(element =>{
+                html_insert += `<tr>
+                                    <td></td>
+                                    <td>`+ element+`</td>
+                                    <td>INT</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-dark"><i class="bi bi-pencil">Edit</i></button>
+                                        <button class="btn btn-sm btn-outline-dark"><i class="bi bi-trash">Delete</i></button>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td></td>
+                                    </tr>`;
+            })
+
+            command_parameters_table.innerHTML = html_insert
+
+            console.log(parameter_list);
+        }
+    </script>
     <body>
         {% include 'header.html' %}
         
@@ -156,6 +196,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <script>generate_parameters('{{ command.parameters }}', '{{ command.id }}');</script>
                                     <tr>
                                     <td></td>
                                     <td>TIMER</td>
@@ -318,6 +359,8 @@
     </body>
 
     <script>
+
+        
 
         function add_command(event){
             

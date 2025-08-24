@@ -23,6 +23,7 @@ class Command(models.Model):
     encoding_type = models.CharField(max_length=10, choices=ENCODING_CHOICES, default='ASCII')
     ascii_content = models.TextField(blank=True, null=True)
     binary_content = models.BinaryField(blank = True, null=True)
+    parameters = models.CharField(max_length=200,blank = True, null=True)
     
     @property
     def content(self):
